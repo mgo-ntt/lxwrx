@@ -1,2 +1,2 @@
 # lxwrx
-linux firewall stuff
+linux firewall stuff (removed most of the old rubbish, current projects at djonz.de)
