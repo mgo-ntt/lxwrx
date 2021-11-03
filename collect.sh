@@ -32,7 +32,7 @@ LOG=/var/log/collect-backups.log
 exec > $LOG 2>&1
 
 # creating list of backup clients
-LIST=`ls -l $LOCDIR | awk '{print $9}' | sed '/^$/d'`
+LIST=`ls $LOCDIR`
 
 echo "Collecting backups from Linux machines"
 echo ""
