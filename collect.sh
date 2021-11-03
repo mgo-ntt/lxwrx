@@ -54,11 +54,11 @@ for TARGET in $LIST; do
                NUM=`ssh -q $TARGET ls $REMDIR/ 2>/dev/null | tr '[:upper:]' '[:lower:]' | egrep 'md5|tgz' | wc -l`
                if [[ $NUM == 2 ]]; then
                   # check if local directory already contains backup of current week
-				  if [ -f $LOCDIR/$TARGET/$TARGET-$WEEK.tgz ]; then
+		  if [ -f $LOCDIR/$TARGET/$TARGET-$WEEK.tgz ]; then
                      printf "%-15s %s\n" "$TARGET:" "Directory already contains backup file"
                   else
                      # if not, copy backup file and checksum
-					 rsync -aq -e "ssh" $TARGET:$REMDIR/ $LOCDIR/$TARGET/
+		     rsync -aq -e "ssh" $TARGET:$REMDIR/ $LOCDIR/$TARGET/
                      cd $LOCDIR/$TARGET/
                      MD5CHK=`md5sum -c $TARGET.md5 | awk '{print $2}'`
                      if [[ $MD5CHK == OK ]]; then
@@ -67,12 +67,12 @@ for TARGET in $LIST; do
                         rm $TARGET.md5
                         mv $TARGET.tgz $TARGET-$WEEK.tgz
                         # housekeeping: enumerate files to delete
-						NUM=`ls -t $LOCDIR/$TARGET/*.tgz | awk "NR>$RETIME" | wc -l`
-						if [[ $NUM = 0 ]]; then
+			NUM=`ls -t $LOCDIR/$TARGET/*.tgz | awk "NR>$RETIME" | wc -l`
+			if [[ $NUM = 0 ]]; then
                            printf "%-15s %-35s %s\n" "$TARGET:" "Nothing to clean up."
                         else
                            # cleanup backup files keeping $RETIME revisions
-						   printf "%-15s %-35s %s\n" "$TARGET:" "Deleting $NUM backups..."
+			   printf "%-15s %-35s %s\n" "$TARGET:" "Deleting $NUM backups..."
                            rm `ls -t $LOCDIR/$TARGET/*.tgz | awk "NR>$RETIME"`
                         fi
                      else
