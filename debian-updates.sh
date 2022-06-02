@@ -40,7 +40,6 @@
 UPGRADE=upgrade
 DO_UPDATE=yes
 
-
 function check_apt_update {
     if [ "$DO_UPDATE" = yes ] ; then
         # NOTE: Even with -qq, apt-get update can output several lines to
