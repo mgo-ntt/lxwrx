@@ -5,6 +5,9 @@
 # adjust permissions and create symlink in /usr/local/bin to run it from everywhere
 # dont forget to add firewall rules allowing 5201 in the input chain
 #
+# requirements:
+# linux, iperf3, lsof, bash
+#
 # dj0Nz Feb 2022
 
 IPERFBIN=/usr/bin/iperf3
