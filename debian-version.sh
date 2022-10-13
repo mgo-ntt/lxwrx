@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check_MK local check for Debian version
+# CheckMK local check for Debian version
 # dj0Nz Dec 2021
 
 # extract version number, dist codename and dist branch from apt policy
