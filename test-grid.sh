@@ -21,6 +21,7 @@ touch $OUTPUT
 cat /dev/null > $OUTPUT
 
 # Apply filter if $PATTERN is not empty
+# You may filter networks with a piped "select(.network |. and startswith("192.168"))|.network"
 function json_filter() {
     if [[ "$1" = "" ]]; then
         jq -r '.[] | [.["comment"], .["network"]] | @csv'
