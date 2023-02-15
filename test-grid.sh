@@ -2,11 +2,13 @@
 
 # Purpose: Export networks from Infoblox Grid to csv file. Just for fun... ;)
 # Parameters: At least $GRID_IP should be set. $PATTERN is optional
-# Requirements: Encrypted Grid credentials (gpg -c) in .netrc format
+# Required programs: curl, gpg, jq
+# Required preparation: Encrypted Grid credentials (gpg -c) in .netrc format
 
 # dj0Nz Feb 2023
 
-GRID_CREDS=grid-creds.gpg
+CREDS_CRYPT=creds.gpg
+CREDS=creds.txt
 OUTPUT=netlist.csv
 PATTERN="RU"
 GRID_IP="198.51.100.23"
@@ -32,15 +34,15 @@ echo ""
 
 # Decrypt credentials, don't cache the passphrase, don't use ncurses crap
 echo "Decrypting credentials"
-gpg -o grid-creds.txt --pinentry-mode=loopback --no-symkey-cache -qd $GRID_CREDS
+gpg -o $CREDS --pinentry-mode=loopback --no-symkey-cache -qd $CREDS_CRYPT
 
 # The main thing. First, get all network containers, then, iterate through them and list networks with comments in csv format
 echo "Gathering data..."
-GRID_CONTAINERS=`curl -k --silent --netrc-file grid-creds.txt https://$GRID_IP/wapi/v2.10/networkcontainer | jq -r '.[]|.network'`
+GRID_CONTAINERS=`curl -k --silent --netrc-file $CREDS https://$GRID_IP/wapi/v2.10/networkcontainer | jq -r '.[]|.network'`
 for CONTAINER in $GRID_CONTAINERS; do
-    curl -k --silent --netrc-file grid-creds.txt https://$GRID_IP/wapi/v2.10/network?network_container=$CONTAINER | json_filter "$PATTERN" | tr -d '"' >> $OUTPUT
+    curl -k --silent --netrc-file $CREDS https://$GRID_IP/wapi/v2.10/network?network_container=$CONTAINER | json_filter "$PATTERN" | tr -d '"' >> $OUTPUT
 done
-rm grid-creds.txt
+rm $CREDS
 
 # Syntax checking and output
 NUM=`cat $OUTPUT | wc -l`
