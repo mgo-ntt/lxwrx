@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Purpose: Export networks from Infoblox Grid to csv file. Just for fun... ;)
+# Purpose: Export networks from Infoblox Grid to csv file.
 # 
 # Parameters: At least $GRID_IP should be set. $FILTER parameters are optional, see description below
 # Required programs: curl, gpg, jq
